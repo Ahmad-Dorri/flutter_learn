@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:langeek_flutter/learn/learn.dart';
 
@@ -13,20 +14,24 @@ class SubcategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final heroTag = 'subcategoryImage-${subcategory.id}';
     return Scaffold(
       appBar: AppBar(title: Text(subcategory.title)),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Hero(
-              tag: heroTag,
-              child: Image.network(
-                subcategory.photo,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            Image.network(
+              subcategory.photo,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              height: 200,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
             const SizedBox(height: 16),
             Text(
@@ -42,8 +47,6 @@ class SubcategoryScreen extends StatelessWidget {
                   '/learn',
                   arguments: LearnScreenArguments(
                     cards: subcategory.cards,
-                    heroTag: heroTag,
-                    heroImage: subcategory.photo
                   ),
                 );
               },

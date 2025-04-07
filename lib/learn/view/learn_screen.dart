@@ -3,31 +3,27 @@ import 'package:langeek_flutter/learn/data/data.dart';
 
 class LearnScreenArguments {
   final List<CardModel> cards;
-  final String heroTag;
-  final String heroImage;
-  const LearnScreenArguments(
-      {required this.cards, required this.heroTag, required this.heroImage});
+
+  const LearnScreenArguments({
+    required this.cards,
+  });
 }
 
 class LearnScreen extends StatelessWidget {
   final LearnScreenArguments learnArgs;
-  const LearnScreen({super.key, required this.learnArgs});
+  const LearnScreen({
+    super.key,
+    required this.learnArgs,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Learn Cards')),
+      appBar: AppBar(
+        title: const Text('Learn Cards'),
+      ),
       body: Column(
         children: [
-          Hero(
-            tag: learnArgs.heroTag,
-            child: Image.network(
-              learnArgs.heroImage,
-              height: 200,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
           Expanded(
             child: PageView.builder(
               itemCount: learnArgs.cards.length,
@@ -43,7 +39,7 @@ class LearnScreen extends StatelessWidget {
                         children: [
                           Text(
                             card.title,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context).textTheme.headlineLarge,
                           ),
                           const SizedBox(height: 8),
                           Text(card.phonetic),

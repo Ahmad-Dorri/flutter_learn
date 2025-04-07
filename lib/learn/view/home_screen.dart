@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
-import '../bloc/subcategory_bloc.dart';
+import 'package:langeek_flutter/learn/bloc/subcategory_bloc.dart';
 import 'subcategory_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,18 +12,25 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => locator<SubcategoryBloc>()..add(SubcategoryFetched(subcategoryId)),
+      create: (_) => locator<SubcategoryBloc>()
+        ..add(
+          SubcategoryFetched(subcategoryId),
+        ),
       child: BlocListener<SubcategoryBloc, SubcategoryState>(
         listener: (context, state) {
-          if (state.status == SubcategoryStatus.success && state.subcategory != null) {
+          if (state.status == SubcategoryStatus.success &&
+              state.subcategory != null) {
             Navigator.of(context).pushReplacementNamed(
               '/subcategory',
-              arguments: SubcategoryScreenArguments(subcategory: state.subcategory!),
+              arguments:
+                  SubcategoryScreenArguments(subcategory: state.subcategory!),
             );
           }
         },
         child: Scaffold(
-          appBar: AppBar(title: const Text('Loading Subcategory')),
+          appBar: AppBar(
+            title: const Text('Loading Subcategory'),
+          ),
           body: Center(
             child: BlocBuilder<SubcategoryBloc, SubcategoryState>(
               builder: (context, state) {
