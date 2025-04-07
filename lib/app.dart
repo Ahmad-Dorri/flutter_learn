@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:langeek_flutter/learn/learn.dart';
+import 'package:langeek_flutter/configs/app_router.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -12,7 +12,9 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SubcategoryScreen(subcategoryId: 13),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: AppRouter.generateRoute,
+      initialRoute: '/',
     );
   }
 }

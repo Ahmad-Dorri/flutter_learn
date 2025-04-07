@@ -23,7 +23,7 @@ final class Subcategory {
   final String title;
   final String originalTitle;
   final int position;
-  final List<Card> cards;
+  final List<CardModel> cards;
   final int wordsCount;
   final int estimatedLearningTime;
   final int categoryId;

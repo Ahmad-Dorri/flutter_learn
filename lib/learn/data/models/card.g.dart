@@ -6,7 +6,7 @@ part of 'card.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Card _$CardFromJson(Map<String, dynamic> json) => Card(
+CardModel _$CardFromJson(Map<String, dynamic> json) => CardModel(
       id: (json['id'] as num).toInt(),
       mainTranslation:
           Translation.fromJson(json['mainTranslation'] as Map<String, dynamic>),
@@ -18,7 +18,7 @@ Card _$CardFromJson(Map<String, dynamic> json) => Card(
       phonetic: json['phonetic'] as String,
     );
 
-Map<String, dynamic> _$CardToJson(Card instance) => <String, dynamic>{
+Map<String, dynamic> _$CardToJson(CardModel instance) => <String, dynamic>{
       'id': instance.id,
       'mainTranslation': instance.mainTranslation,
       'type': instance.type,

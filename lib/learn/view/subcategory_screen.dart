@@ -1,46 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:langeek_flutter/di/service_locator.dart';
-import 'package:langeek_flutter/learn/bloc/subcategory_bloc.dart';
+import 'package:langeek_flutter/learn/learn.dart';
+
+class SubcategoryScreenArguments {
+  final Subcategory subcategory;
+  const SubcategoryScreenArguments({required this.subcategory});
+}
 
 class SubcategoryScreen extends StatelessWidget {
-  final int subcategoryId;
+  final Subcategory subcategory;
 
-  const SubcategoryScreen({super.key, required this.subcategoryId});
+  const SubcategoryScreen({super.key, required this.subcategory});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          locator<SubcategoryBloc>()..add(SubcategoryFetched(subcategoryId)),
-      child: Scaffold(
-        appBar: AppBar(title: const Text('Subcategory')),
-        body: BlocBuilder<SubcategoryBloc, SubcategoryState>(
-          builder: (context, state) {
-            if (state.status == SubcategoryStatus.loading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state.status == SubcategoryStatus.failure) {
-              return Center(
-                child: Text('Error: ${state.error}'),
-              );
-            } else if (state.status == SubcategoryStatus.success &&
-                state.subcategory != null) {
-              return ListView(
-                padding: const EdgeInsets.all(16.0),
-                children: [
-                  Text(
-                    state.subcategory!.title,
-                    style: Theme.of(context).textTheme.bodyLarge,
+    final heroTag = 'subcategoryImage-${subcategory.id}';
+    return Scaffold(
+      appBar: AppBar(title: Text(subcategory.title)),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Hero(
+              tag: heroTag,
+              child: Image.network(
+                subcategory.photo,
+                height: 250,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              subcategory.title,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+            const SizedBox(height: 8),
+            Text('Original: ${subcategory.originalTitle}'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  '/learn',
+                  arguments: LearnScreenArguments(
+                    cards: subcategory.cards,
+                    heroTag: heroTag,
+                    heroImage: subcategory.photo
                   ),
-                  const SizedBox(height: 8),
-                  Text('Original Title: ${state.subcategory!.originalTitle}'),
-                ],
-              );
-            }
-            return const SizedBox(); // Idle state
-          },
+                );
+              },
+              child: const Text('Learn Cards'),
+            ),
+          ],
         ),
       ),
     );

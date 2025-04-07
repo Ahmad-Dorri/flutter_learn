@@ -4,8 +4,8 @@ import 'translation.dart';
 part 'card.g.dart';
 
 @JsonSerializable()
-class Card {
-  const Card({
+class CardModel {
+  const CardModel({
     required this.id,
     required this.mainTranslation,
     required this.type,
@@ -25,5 +25,5 @@ class Card {
   final String title;
   final String phonetic;
 
-  factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
+  factory CardModel.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
 }

@@ -12,7 +12,7 @@ Subcategory _$SubcategoryFromJson(Map<String, dynamic> json) => Subcategory(
       originalTitle: json['originalTitle'] as String,
       position: (json['position'] as num).toInt(),
       cards: (json['cards'] as List<dynamic>)
-          .map((e) => Card.fromJson(e as Map<String, dynamic>))
+          .map((e) => CardModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       wordsCount: (json['wordsCount'] as num).toInt(),
       estimatedLearningTime: (json['estimatedLearningTime'] as num).toInt(),
