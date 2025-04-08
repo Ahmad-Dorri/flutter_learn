@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:langeek_flutter/configs/route_paths.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
 import 'package:langeek_flutter/learn/cubit/subcategory_cubit.dart';
 import 'subcategory_screen.dart';
@@ -19,12 +20,10 @@ class HomeScreen extends StatelessWidget {
       create: (_) => locator<SubcategoryCubit>(),
       child: BlocListener<SubcategoryCubit, SubcategoryState>(
         listener: (context, state) {
-          state.when(
-            initial: () {},
-            loading: () {},
+          state.maybeWhen(
             loaded: (subcategory) {
               Navigator.of(context).pushReplacementNamed(
-                '/subcategory',
+                RoutePaths.subcategory,
                 arguments: SubcategoryScreenArguments(subcategory: subcategory),
               );
             },
@@ -35,6 +34,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               );
             },
+            orElse: () {},
           );
         },
         child: Scaffold(
