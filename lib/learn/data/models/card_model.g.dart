@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'card.dart';
+part of 'card_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CardModel _$CardFromJson(Map<String, dynamic> json) => CardModel(
+CardModel _$CardModelFromJson(Map<String, dynamic> json) => CardModel(
       id: (json['id'] as num).toInt(),
       mainTranslation:
           Translation.fromJson(json['mainTranslation'] as Map<String, dynamic>),
@@ -18,7 +18,7 @@ CardModel _$CardFromJson(Map<String, dynamic> json) => CardModel(
       phonetic: json['phonetic'] as String,
     );
 
-Map<String, dynamic> _$CardToJson(CardModel instance) => <String, dynamic>{
+Map<String, dynamic> _$CardModelToJson(CardModel instance) => <String, dynamic>{
       'id': instance.id,
       'mainTranslation': instance.mainTranslation,
       'type': instance.type,

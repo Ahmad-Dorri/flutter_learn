@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'card.dart';
+import 'card_model.dart';
 
 part 'subcategory.g.dart';
 

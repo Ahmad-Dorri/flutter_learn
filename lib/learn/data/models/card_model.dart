@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'translation.dart';
 
-part 'card.g.dart';
+part 'card_model.g.dart';
 
 @JsonSerializable()
 class CardModel {
@@ -25,5 +25,5 @@ class CardModel {
   final String title;
   final String phonetic;
 
-  factory CardModel.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
+  factory CardModel.fromJson(Map<String, dynamic> json) => _$CardModelFromJson(json);
 }

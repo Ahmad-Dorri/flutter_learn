@@ -1,4 +1,4 @@
-export 'card.dart';
+export 'card_model.dart';
 export 'letter.dart';
 export 'metadata.dart';
 export 'nlp_analyzed_data.dart';

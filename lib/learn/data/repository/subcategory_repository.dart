@@ -6,7 +6,7 @@ class SubcategoryRepository {
 
   SubcategoryRepository({required this.dio});
 
-  Future<Subcategory> getSubcategory(int id) async {
+  Future<Subcategory> fetchSubcategory(int id) async {
     final response = await dio.get('https://api.langeek.co/v1/c/en/subcategory/$id');
     if (response.statusCode == 200) {
       return Subcategory.fromJson(response.data);

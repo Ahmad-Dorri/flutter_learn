@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
-import 'package:langeek_flutter/learn/bloc/subcategory_bloc.dart';
+import 'package:langeek_flutter/learn/cubit/subcategory_cubit.dart';
 import 'subcategory_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,37 +9,49 @@ class HomeScreen extends StatelessWidget {
 
   final int subcategoryId = 13;
 
+  void _getSubcategory(BuildContext context) {
+    context.read<SubcategoryCubit>().getSubcategory(subcategoryId);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => locator<SubcategoryBloc>()
-        ..add(
-          SubcategoryFetched(subcategoryId),
-        ),
-      child: BlocListener<SubcategoryBloc, SubcategoryState>(
+    return BlocProvider<SubcategoryCubit>(
+      create: (_) => locator<SubcategoryCubit>(),
+      child: BlocListener<SubcategoryCubit, SubcategoryState>(
         listener: (context, state) {
-          if (state.status == SubcategoryStatus.success &&
-              state.subcategory != null) {
-            Navigator.of(context).pushReplacementNamed(
-              '/subcategory',
-              arguments:
-                  SubcategoryScreenArguments(subcategory: state.subcategory!),
-            );
-          }
+          state.when(
+            initial: () {},
+            loading: () {},
+            loaded: (subcategory) {
+              Navigator.of(context).pushReplacementNamed(
+                '/subcategory',
+                arguments: SubcategoryScreenArguments(subcategory: subcategory),
+              );
+            },
+            error: (message) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(message),
+                ),
+              );
+            },
+          );
         },
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Loading Subcategory'),
-          ),
           body: Center(
-            child: BlocBuilder<SubcategoryBloc, SubcategoryState>(
+            child: BlocBuilder<SubcategoryCubit, SubcategoryState>(
               builder: (context, state) {
-                if (state.status == SubcategoryStatus.loading) {
-                  return const CircularProgressIndicator();
-                } else if (state.status == SubcategoryStatus.failure) {
-                  return Text('Error: ${state.error}');
-                }
-                return const SizedBox();
+                return state.when(
+                  initial: () => Center(
+                    child: ElevatedButton(
+                      onPressed: () => _getSubcategory(context),
+                      child: const Text('get subcategory'),
+                    ),
+                  ),
+                  loading: () => const CircularProgressIndicator(),
+                  loaded: (subcategory) => const SizedBox(),
+                  error: (message) => Text(message),
+                );
               },
             ),
           ),

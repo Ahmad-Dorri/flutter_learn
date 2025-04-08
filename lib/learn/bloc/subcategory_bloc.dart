@@ -5,6 +5,7 @@ import 'package:langeek_flutter/learn/data/data.dart';
 part 'subcategory_event.dart';
 part 'subcategory_state.dart';
 
+/// ### This bloc has no usage in the code base but I created it to compare it with the cubit implementation.
 class SubcategoryBloc extends Bloc<SubcategoryEvent, SubcategoryState> {
   final SubcategoryRepository repository;
 
@@ -19,7 +20,7 @@ class SubcategoryBloc extends Bloc<SubcategoryEvent, SubcategoryState> {
   ) async {
     emit(state.copyWith(status: SubcategoryStatus.loading));
     try {
-      final subcategory = await repository.getSubcategory(event.id);
+      final subcategory = await repository.fetchSubcategory(event.id);
       emit(state.copyWith(
         status: SubcategoryStatus.success,
         subcategory: subcategory,
