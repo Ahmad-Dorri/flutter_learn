@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
 import 'package:langeek_flutter/learn/learn.dart';
+import 'package:langeek_flutter/learn/widgets/player.dart';
 
 class LearnScreenArguments {
   final List<CardModel> cards;
@@ -38,7 +39,7 @@ class _LearnScreenState extends State<LearnScreen> {
         children: [
           _buildProgressBar(),
           const SizedBox(height: 16),
-          _buildCardCarousel(),
+          Expanded(child: _buildCardCarousel()),
         ],
       ),
     );
@@ -68,59 +69,134 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   Widget _buildCardCarousel() {
-    return Expanded(
-      child: BlocBuilder<ReviewCubit, ReviewState>(
-        builder: (context, state) {
-          final card = widget.learnArgs.cards[state.currentIndex];
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              elevation: 6,
-              clipBehavior: Clip.antiAlias,
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      CachedNetworkImage(
-                        imageUrl: card.mainTranslation.wordPhoto.photo,
-                        height: 200,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        placeholder: (context, url) => SizedBox(
-                          height: 200,
-                          child: Container(
-                            color: Colors.grey.shade300,
-                            alignment: Alignment.center,
-                            child: const CircularProgressIndicator(),
-                          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constraints.maxHeight,
+            ),
+            child: IntrinsicHeight(
+              child: BlocBuilder<ReviewCubit, ReviewState>(
+                builder: (context, state) {
+                  final card = widget.learnArgs.cards[state.currentIndex];
+                  return Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Stack(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 16),
+                            _buildImage(card),
+                            const SizedBox(height: 16),
+                            _buildTitleRow(card),
+                            const SizedBox(height: 8),
+                            Text(
+                              card.phonetic,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            _buildTypeBadge(card),
+                            const SizedBox(height: 16),
+                            Text(
+                              card.mainTranslation.translation,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
-                        errorWidget: (context, url, error) => SizedBox(
-                          height: 200,
-                          child: Container(
-                            color: Colors.grey.shade200,
-                            alignment: Alignment.center,
-                            child: const Icon(Icons.error, color: Colors.red),
-                          ),
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 240,
+                          child: _buildNavigationButtons(),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        card.title,
-                        style:
-                            const TextStyle(fontSize: 28, color: Colors.black),
-                      ),
-                      _buildNavigationButtons(),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  );
+                },
               ),
             ),
-          );
-        },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildImage(CardModel card) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: CachedNetworkImage(
+        imageUrl: card.mainTranslation.wordPhoto.photo,
+        height: 192,
+        width: 240,
+        placeholder: (context, url) => SizedBox(
+          height: 200,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.grey.shade300,
+            ),
+            alignment: Alignment.center,
+            child: const CircularProgressIndicator(),
+          ),
+        ),
+        errorWidget: (context, url, error) => SizedBox(
+          height: 200,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.grey.shade200,
+            ),
+            alignment: Alignment.center,
+            child: const Icon(Icons.error, color: Colors.red),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleRow(CardModel card) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          card.title,
+          style: const TextStyle(
+            fontSize: 24,
+            color: Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Player(url: card.mainTranslation.titleVoice),
+      ],
+    );
+  }
+
+  Widget _buildTypeBadge(CardModel card) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Colors.blue,
+      ),
+      child: Text(
+        card.mainTranslation.type,
+        style: const TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }
@@ -139,9 +215,10 @@ class _LearnScreenState extends State<LearnScreen> {
                   : null,
             ),
             IconButton(
-                iconSize: 36,
-                icon: const Icon(Icons.chevron_right, color: Colors.blue),
-                onPressed: () => context.read<ReviewCubit>().goToNext()),
+              iconSize: 36,
+              icon: const Icon(Icons.chevron_right, color: Colors.blue),
+              onPressed: () => context.read<ReviewCubit>().goToNext(),
+            ),
           ],
         );
       },

@@ -8,7 +8,7 @@ import 'subcategory_screen.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  final int subcategoryId = 13;
+  final int subcategoryId = 5;
 
   void _getSubcategory(BuildContext context) {
     context.read<SubcategoryCubit>().getSubcategory(subcategoryId);
@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(message),
+                  duration: const Duration(seconds: 10),
                 ),
               );
             },
@@ -38,22 +39,34 @@ class HomeScreen extends StatelessWidget {
           );
         },
         child: Scaffold(
-          body: Center(
-            child: BlocBuilder<SubcategoryCubit, SubcategoryState>(
-              builder: (context, state) {
-                return state.when(
-                  initial: () => Center(
-                    child: ElevatedButton(
-                      onPressed: () => _getSubcategory(context),
-                      child: const Text('get subcategory'),
-                    ),
+          body: BlocBuilder<SubcategoryCubit, SubcategoryState>(
+            builder: (context, state) {
+              return state.when(
+                initial: () => Center(
+                  child: ElevatedButton(
+                    onPressed: () => _getSubcategory(context),
+                    child: const Text('get subcategory'),
                   ),
-                  loading: () => const CircularProgressIndicator(),
-                  loaded: (subcategory) => const SizedBox(),
-                  error: (message) => Text(message),
-                );
-              },
-            ),
+                ),
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                loaded: (subcategory) => const SizedBox(),
+                error: (message) => Center(
+                  child: Column(
+                    children: [
+                      Text(message),
+                      ElevatedButton(
+                        onPressed: () {
+                          _getSubcategory(context);
+                        },
+                        child: const Text('try again'),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

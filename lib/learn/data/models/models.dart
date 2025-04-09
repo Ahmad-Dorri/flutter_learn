@@ -1,10 +1,4 @@
 export 'card_model.dart';
-export 'letter.dart';
-export 'metadata.dart';
-export 'nlp_analyzed_data.dart';
-export 'part_of_speech.dart';
 export 'subcategory.dart';
 export 'translation.dart';
 export 'word_photo.dart';
-export 'word_tree_root.dart';
-export 'word_tree.dart';
