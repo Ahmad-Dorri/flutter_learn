@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
+import 'package:langeek_flutter/data/data.dart';
 import 'package:langeek_flutter/learn/learn.dart';
 import 'package:langeek_flutter/learn/widgets/player.dart';
 

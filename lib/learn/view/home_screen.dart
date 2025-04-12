@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
+import 'package:langeek_flutter/data/data.dart';
+import 'package:langeek_flutter/data/services/result_state.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
 import 'package:langeek_flutter/learn/cubit/subcategory_cubit.dart';
 import 'subcategory_screen.dart';
@@ -11,26 +13,26 @@ class HomeScreen extends StatelessWidget {
   final int subcategoryId = 5;
 
   void _getSubcategory(BuildContext context) {
-    context.read<SubcategoryCubit>().getSubcategory(subcategoryId);
+    context.read<SubcategoryCubit>().loadSubcategory(subcategoryId);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SubcategoryCubit>(
       create: (_) => locator<SubcategoryCubit>(),
-      child: BlocListener<SubcategoryCubit, SubcategoryState>(
+      child: BlocListener<SubcategoryCubit, ResultState<Subcategory>>(
         listener: (context, state) {
           state.maybeWhen(
-            loaded: (subcategory) {
+            data: (subcategory) {
               Navigator.of(context).pushReplacementNamed(
                 RoutePaths.subcategory,
                 arguments: SubcategoryScreenArguments(subcategory: subcategory),
               );
             },
-            error: (message) {
+            error: (e) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(message),
+                  content: Text(e.toString()),
                   duration: const Duration(seconds: 10),
                 ),
               );
@@ -39,10 +41,10 @@ class HomeScreen extends StatelessWidget {
           );
         },
         child: Scaffold(
-          body: BlocBuilder<SubcategoryCubit, SubcategoryState>(
+          body: BlocBuilder<SubcategoryCubit, ResultState<Subcategory>>(
             builder: (context, state) {
               return state.when(
-                initial: () => Center(
+                idle: () => Center(
                   child: ElevatedButton(
                     onPressed: () => _getSubcategory(context),
                     child: const Text('get subcategory'),
@@ -51,11 +53,11 @@ class HomeScreen extends StatelessWidget {
                 loading: () => const Center(
                   child: CircularProgressIndicator(),
                 ),
-                loaded: (subcategory) => const SizedBox(),
-                error: (message) => Center(
+                data: (subcategory) => const SizedBox(),
+                error: (e) => Center(
                   child: Column(
                     children: [
-                      Text(message),
+                      Text(e.toString()),
                       ElevatedButton(
                         onPressed: () {
                           _getSubcategory(context);
