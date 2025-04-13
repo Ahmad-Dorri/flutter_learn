@@ -95,7 +95,7 @@ class _LearnScreenState extends State<LearnScreen> {
                             _buildTitleRow(card),
                             const SizedBox(height: 8),
                             Text(
-                              card.phonetic,
+                              card.phonetic ?? '',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey.shade400,
@@ -105,7 +105,7 @@ class _LearnScreenState extends State<LearnScreen> {
                             _buildTypeBadge(card),
                             const SizedBox(height: 16),
                             Text(
-                              card.mainTranslation.translation,
+                              card.mainTranslation?.translation ?? '',
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,
@@ -137,7 +137,7 @@ class _LearnScreenState extends State<LearnScreen> {
         borderRadius: BorderRadius.circular(24),
       ),
       child: CachedNetworkImage(
-        imageUrl: card.mainTranslation.wordPhoto.photo,
+        imageUrl: card.mainTranslation?.wordPhoto?.photo ?? '',
         height: 192,
         width: 240,
         placeholder: (context, url) => SizedBox(
@@ -171,7 +171,7 @@ class _LearnScreenState extends State<LearnScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          card.title,
+          card.title ?? '',
           style: const TextStyle(
             fontSize: 24,
             color: Colors.black,
@@ -179,7 +179,7 @@ class _LearnScreenState extends State<LearnScreen> {
           ),
         ),
         const SizedBox(width: 8),
-        Player(url: card.mainTranslation.titleVoice),
+        Player(url: card.mainTranslation?.titleVoice ?? ''),
       ],
     );
   }
@@ -192,7 +192,7 @@ class _LearnScreenState extends State<LearnScreen> {
         color: Colors.blue,
       ),
       child: Text(
-        card.mainTranslation.type,
+        card.mainTranslation?.type ?? '',
         style: const TextStyle(
           fontSize: 14,
           color: Colors.white,

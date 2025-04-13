@@ -1,29 +1,47 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive/hive.dart';
+import 'package:langeek_flutter/configs/constants.dart';
 import 'translation.dart';
 
 part 'card_model.g.dart';
 
 @JsonSerializable()
+@HiveType(typeId: kStorageCardModel)
 class CardModel {
   const CardModel({
     required this.id,
-    required this.mainTranslation,
-    required this.type,
+    this.mainTranslation,
+    this.type,
     this.description,
-    required this.position,
-    required this.updatedAt,
-    required this.title,
-    required this.phonetic,
+    this.position,
+    this.updatedAt,
+    this.title,
+    this.phonetic,
   });
 
+  @HiveField(0)
   final int id;
-  final Translation mainTranslation;
-  final String type;
+
+  @HiveField(1)
+  final Translation? mainTranslation;
+
+  @HiveField(2)
+  final String? type;
+
+  @HiveField(3)
   final String? description;
-  final int position;
-  final DateTime updatedAt;
-  final String title;
-  final String phonetic;
+
+  @HiveField(4)
+  final int? position;
+
+  @HiveField(5)
+  final DateTime? updatedAt;
+
+  @HiveField(6)
+  final String? title;
+
+  @HiveField(7)
+  final String? phonetic;
 
   factory CardModel.fromJson(Map<String, dynamic> json) => _$CardModelFromJson(json);
 }
