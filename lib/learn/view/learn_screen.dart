@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
 import 'package:langeek_flutter/data/data.dart';
+import 'package:langeek_flutter/learn/cubit/leitner_cubit.dart';
 import 'package:langeek_flutter/learn/learn.dart';
 import 'package:langeek_flutter/learn/widgets/player.dart';
 
@@ -111,6 +112,7 @@ class _LearnScreenState extends State<LearnScreen> {
                                 color: Colors.black,
                               ),
                             ),
+                            _buildAddToLeitnerButton(card)
                           ],
                         ),
                         Positioned(
@@ -129,6 +131,24 @@ class _LearnScreenState extends State<LearnScreen> {
         );
       },
     );
+  }
+
+  Widget _buildAddToLeitnerButton(CardModel card) {
+    return IconButton(
+          iconSize: 36,
+          icon: const Icon(Icons.add, color: Colors.blue),
+          onPressed: () {
+            context.read<LeitnerCubit>().addCard(card);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Added to Leitner'),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          },
+          tooltip: 'Add to Leitner',
+        );
+
   }
 
   Widget _buildImage(CardModel card) {

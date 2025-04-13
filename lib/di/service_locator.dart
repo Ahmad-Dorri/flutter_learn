@@ -6,6 +6,7 @@ import 'package:langeek_flutter/configs/app_config.dart';
 import 'package:langeek_flutter/configs/hive_setup.dart';
 import 'package:langeek_flutter/data/data.dart';
 import 'package:langeek_flutter/data/services/dio_client.dart';
+import 'package:langeek_flutter/data/services/repositories/leitner_repository.dart';
 import 'package:langeek_flutter/learn/learn.dart';
 import 'package:langeek_flutter/utils/audio_manager.dart';
 
@@ -26,6 +27,9 @@ Future<void> setup(AppConfig config) async {
   // repositories
   locator.registerLazySingleton<SubcategoryRepository>(
     () => SubcategoryRepository(dioClient: locator<DioClient>()),
+  );
+  locator.registerLazySingleton<LeitnerRepository>(
+    () => LeitnerRepository(locator<Box<CardModel>>()),
   );
 
   // blocs

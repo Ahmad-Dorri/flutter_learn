@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
 import 'package:langeek_flutter/data/data.dart';
 import 'package:langeek_flutter/data/services/result_state.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
-import 'package:langeek_flutter/learn/cubit/subcategory_cubit.dart';
-import 'subcategory_screen.dart';
+import 'package:langeek_flutter/learn/cubit/leitner_cubit.dart';
+import 'package:langeek_flutter/learn/learn.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -45,9 +46,34 @@ class HomeScreen extends StatelessWidget {
             builder: (context, state) {
               return state.when(
                 idle: () => Center(
-                  child: ElevatedButton(
-                    onPressed: () => _getSubcategory(context),
-                    child: const Text('get subcategory'),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => _getSubcategory(context),
+                        child: const Text('get subcategory'),
+                      ),
+                      if (context.read<LeitnerCubit>().state.cards.isNotEmpty)
+                        Column(
+                          children: [
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                context.read<LeitnerCubit>().loadCards();
+                                Navigator.of(context).pushNamed(
+                                    RoutePaths.learn,
+                                    arguments: LearnScreenArguments(
+                                        cards: context.read<LeitnerCubit>()
+                                            .state
+                                            .cards));
+                              },
+                              child: const Text('leitner'),
+                            )
+                          ],
+                        )
+                    ],
                   ),
                 ),
                 loading: () => const Center(
