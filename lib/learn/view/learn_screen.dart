@@ -6,6 +6,7 @@ import 'package:langeek_flutter/data/data.dart';
 import 'package:langeek_flutter/learn/cubit/leitner_cubit.dart';
 import 'package:langeek_flutter/learn/learn.dart';
 import 'package:langeek_flutter/learn/widgets/player.dart';
+import 'package:langeek_flutter/widgets/base/dimens.dart';
 
 class LearnScreenArguments {
   final List<CardModel> cards;
@@ -40,7 +41,7 @@ class _LearnScreenState extends State<LearnScreen> {
       body: Column(
         children: [
           _buildProgressBar(),
-          const SizedBox(height: 16),
+          SizedBox(height: Dimens.height_16),
           Expanded(child: _buildCardCarousel()),
         ],
       ),
@@ -90,11 +91,11 @@ class _LearnScreenState extends State<LearnScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            const SizedBox(height: 16),
+                             SizedBox(height: Dimens.height_16),
                             _buildImage(card),
-                            const SizedBox(height: 16),
+                             SizedBox(height: Dimens.height_16),
                             _buildTitleRow(card),
-                            const SizedBox(height: 8),
+                             SizedBox(height: Dimens.height_16),
                             Text(
                               card.phonetic ?? '',
                               style: TextStyle(
@@ -102,13 +103,13 @@ class _LearnScreenState extends State<LearnScreen> {
                                 color: Colors.grey.shade400,
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: Dimens.height_16),
                             _buildTypeBadge(card),
-                            const SizedBox(height: 16),
+                            SizedBox(height: Dimens.height_16),
                             Text(
                               card.mainTranslation?.translation ?? '',
-                              style: const TextStyle(
-                                fontSize: 16,
+                              style: TextStyle(
+                                fontSize: Dimens.font_16,
                                 color: Colors.black,
                               ),
                             ),
@@ -135,7 +136,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
   Widget _buildAddToLeitnerButton(CardModel card) {
     return IconButton(
-          iconSize: 36,
+          iconSize: Dimens.width_32,
           icon: const Icon(Icons.add, color: Colors.blue),
           onPressed: () {
             context.read<LeitnerCubit>().addCard(card);
@@ -154,7 +155,7 @@ class _LearnScreenState extends State<LearnScreen> {
   Widget _buildImage(CardModel card) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(Dimens.border_24),
       ),
       child: CachedNetworkImage(
         imageUrl: card.mainTranslation?.wordPhoto?.photo ?? '',

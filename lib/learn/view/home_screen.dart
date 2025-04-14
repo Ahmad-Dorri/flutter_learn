@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:langeek_flutter/configs/route_paths.dart';
 import 'package:langeek_flutter/data/data.dart';
 import 'package:langeek_flutter/data/services/result_state.dart';
 import 'package:langeek_flutter/di/service_locator.dart';
 import 'package:langeek_flutter/learn/cubit/leitner_cubit.dart';
 import 'package:langeek_flutter/learn/learn.dart';
+import 'package:langeek_flutter/widgets/base/dimens.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -56,8 +56,8 @@ class HomeScreen extends StatelessWidget {
                       if (context.read<LeitnerCubit>().state.cards.isNotEmpty)
                         Column(
                           children: [
-                            const SizedBox(
-                              height: 24,
+                            SizedBox(
+                              height: Dimens.height_16,
                             ),
                             ElevatedButton(
                               onPressed: () {
